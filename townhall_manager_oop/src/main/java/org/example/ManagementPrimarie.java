@@ -8,17 +8,11 @@ public class ManagementPrimarie {
     static String outPath = "src/main/resources/output/";
     static String inPath = "src/main/resources/input/";
     public static void main(String[] args) throws IOException, ParseException {
-
-//        File inFile = new File(inPath + "13_birou_cereri_2.txt");
-//        //File inFile = new File(inPath + "14_birou_cereri_3.txt");
-//        File outFile = new File(outPath + "out_cu_ele.txt");
-
-       File inFile = new File(inPath + args[0]);
-       File outFile = new File(outPath + args[0]);
-
+        //get files
+        File inFile = new File(inPath + args[0]);
+        File outFile = new File(outPath + args[0]);
         Scanner scanner = new Scanner(inFile);
         FileWriter writer = new FileWriter(outFile);
-
         //stores the users
         Set<User> users = new HashSet<User>();
         //store bureaux
@@ -32,7 +26,6 @@ public class ManagementPrimarie {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] parts = line.split(";");
-
             if(parts[0].equals("adauga_utilizator")) {
                 //adding a new user
                 if(parts[1].equals(" elev")) {
@@ -62,11 +55,9 @@ public class ManagementPrimarie {
                     users.add(entitate);
                 }
             }
-
             if(parts[0].equals("cerere_noua")){
                 String user_name = parts[1].substring(1);
-//                writer.write("Username din cerere este : " + parts[1].substring(1) + "\n");
-                //search for user in users set
+                //search for user in Users set
                 boolean found = false;
                 User requester = null;
                 for (User user : users) {
@@ -107,13 +98,9 @@ public class ManagementPrimarie {
                         tip_cerere = 0;
                         break;
                 }
-
                 String data_cerere = parts[3].substring(1);
-
                 int prioritate_cerere = Integer.parseInt(parts[4].substring(1));
-
                 Cerere cerere_noua = new Cerere(prioritate_cerere, tip_cerere, data_cerere);
-
                 //check if the request is valid
                 String tip_requester = null;
                 boolean valid = false;
@@ -168,7 +155,6 @@ public class ManagementPrimarie {
                     }
                 }
             }
-
             if(parts[0].equals("afiseaza_cereri_in_asteptare")){
                 //look for the user
                 String username = parts[1].substring(1);
@@ -237,7 +223,6 @@ public class ManagementPrimarie {
                     }
                 }
             }
-
             if(parts[0].equals("afiseaza_cereri")){
                 //type birou
                 int tip;
@@ -314,7 +299,6 @@ public class ManagementPrimarie {
                     }
                 }
             }
-
             if(parts[0].equals("rezolva_cerere")){
                 int tip = 0;
                 switch (parts[1]) {
@@ -337,7 +321,6 @@ public class ManagementPrimarie {
                         tip = 0;
                         break;
                 }
-
                 //transfer request between lists on the user side +
                 //remove request from the bureau queue
                 Iterator<Birou> iterator = birouri.iterator();
@@ -347,17 +330,14 @@ public class ManagementPrimarie {
                     if (tip == B.type) {
                         Collections.sort(B.lista_perechi);
                         //copy first element's request and user
-
                         //save the data and remove the element
                         Cerere removed_cerere = B.lista_perechi.get(0).cerere;
                         User user = B.lista_perechi.get(0).user;
                         B.lista_perechi.remove(0);
-
                         //remove first element from list
                         user.pq.remove(removed_cerere);
                         //add it to the finished list
                         user.fn.add(removed_cerere);
-
                         //open the file for the office man
                         for(int i = 0; i < B.lista_functionari.size(); i++){
                             Functionar f = B.lista_functionari.get(i);
@@ -369,7 +349,7 @@ public class ManagementPrimarie {
                                      PrintWriter out = new PrintWriter(bw)) {
                                     out.println(removed_cerere.getDate() + " - " + user.getName());
                                 } catch (IOException e) {
-                                    System.out.println("UNLOKO");
+                                    System.out.println("ERROR");
                                     throw new IOException();
                                 }
                             }
@@ -377,7 +357,6 @@ public class ManagementPrimarie {
                     }
                 }
             }
-
             if(parts[0].equals("afiseaza_cereri_finalizate")){
                 //look for the user
                 String username = parts[1].substring(1);
@@ -395,25 +374,7 @@ public class ManagementPrimarie {
                     }
                 }
             }
-
-
-
         }
-
-
-
-
-
-//        Iterator<User> iterator = users.iterator();
-//        while(iterator.hasNext()) {
-//            Object o = iterator.next();
-//            if( o instanceof Elev){
-//                writer.write("found elev with name/school " + ((Elev) o).getName() + " / " + ((Elev) o).scoala + "\n");
-//            }
-//            if( o instanceof Persoana){
-//                writer.write("found pesoana with name " + ((Persoana) o).getName() + "\n");
-//            }
-//        }
         writer.close();
         scanner.close();
     }
