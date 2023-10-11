@@ -1,13 +1,13 @@
 package org.example;
 //
 // TYPES :
-// 1 -> inlocuire buletin
-// 2 -> inlocuire carnet de sofer
-// 3 -> inregistrare venit salarial
-// 4 -> inregistrare cupoane de pensie
-// 5 -> inlocuire carnet de elev
-// 6 -> creare act constitutiv
-// 7 -> reinnoire autorizatie
+// 1 -> ID Replacement
+// 2 -> Driver's License Replacement
+// 3 -> Income Papers
+// 4 -> Senior Coupons form
+// 5 -> Student ID Replacement
+// 6 -> Constitutional Act Request
+// 7 -> Authorization Renewal
 //
 public class Cerere implements Comparable<Cerere> {
     //Parameters, getters and setters
@@ -32,7 +32,6 @@ public class Cerere implements Comparable<Cerere> {
     public void setPrio(int prio) {
         this.prio = prio;
     }
-
     //Constructors
     Cerere(int prio, int type, String date){
         this.prio = prio;
@@ -40,7 +39,6 @@ public class Cerere implements Comparable<Cerere> {
         this.date = date;
     }
     Cerere(){}
-
     //Methods
     public String generareCerere(User user){
         String cerere = "Subsemnatul " ;
@@ -67,7 +65,6 @@ public class Cerere implements Comparable<Cerere> {
             cerere += ((EntitateJuridica) user).reprezentant + ", reprezentant legal al companiei " +
                     user.getName() + ", va rog sa-mi aprobati urmatoarea solicitare:";
         }
-
         switch (this.type) {
             case 1:  cerere += " inlocuire buletin";
                 break;
@@ -86,27 +83,17 @@ public class Cerere implements Comparable<Cerere> {
             default: cerere += " cerere invalida";
                 break;
         }
-
         return cerere;
     }
-
     @Override
     public int compareTo(Cerere c2) {
-        //compare prio
-//        if(this.getPrio() < c2.getPrio())
-//            return 1;
-//        if(this.getPrio() > c2.getPrio())
-//            return -1;
-
         //compare year
         int an_1 = Integer.parseInt(this.getDate().substring(7,11));
         int an_2 = Integer.parseInt(c2.getDate().substring(7,11));
-
         if(an_1 > an_2)
             return 1;
         if(an_1 < an_2)
             return -1;
-
         //compare month
         String luna_1 = this.getDate().substring(3,6);
         int nr_1 = 0;
@@ -152,7 +139,6 @@ public class Cerere implements Comparable<Cerere> {
             default:
                 break;
         }
-
         switch (luna_2) {
             case "Jan":
                 nr_2 = 1;
@@ -193,50 +179,39 @@ public class Cerere implements Comparable<Cerere> {
             default:
                 break;
         }
-
         if(nr_1 > nr_2)
             return 1;
         if(nr_1 < nr_2)
             return -1;
-
         //compare day
         int zi_1 = Integer.parseInt(this.getDate().substring(0,2));
         int zi_2 = Integer.parseInt(c2.getDate().substring(0,2));
-
         if(zi_1 > zi_2)
             return 1;
         if(zi_1 < zi_2)
             return -1;
-
         //compare hour
         String[] parts_1 = this.getDate().substring(12).split(":");
         String[] parts_2 = c2.getDate().substring(12).split(":");
-
         int ora_1 = Integer.parseInt(parts_1[0]);
         int ora_2 = Integer.parseInt(parts_2[0]);
-
         if(ora_1 > ora_2)
             return 1;
         if(ora_1 < ora_2)
             return -1;
-
         //compare minute
         int min_1 = Integer.parseInt(parts_1[1]);
         int min_2 = Integer.parseInt(parts_2[1]);
-
         if(min_1 > min_2)
             return 1;
         if(min_1 < min_2)
             return -1;
-
         int sec_1 = Integer.parseInt(parts_1[2]);
         int sec_2 = Integer.parseInt(parts_2[2]);
-
         if(sec_1 > sec_2)
             return 1;
         if(sec_1 < sec_2)
             return -1;
-
         return 0;
     }
 }
