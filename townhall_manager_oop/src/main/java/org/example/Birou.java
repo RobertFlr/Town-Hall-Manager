@@ -7,14 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-//class GigaPair{
-//    Functionar functionar;
-//    FileWriter fr;
-//    GigaPair(Functionar functionar, FileWriter fileWriter){
-//
-//    }
-//}
-
 class Pair implements Comparable<Pair>{
     User user;
     Cerere cerere;
